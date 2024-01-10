@@ -4,7 +4,7 @@ import extract
 def splitTextBy(pattern, text, context=""):
   result = re.split(pattern, text)
   chunks = result[::2]
-  context = [context] + [context + text.replace('\n', ' ').strip() + '. ' for ctx in result[1::2]]
+  context = [context] + [context + ctx.replace('\n', ' ').strip() + '. ' for ctx in result[1::2]]
   return chunks, context
 
 def textSplit(textpdf):
@@ -21,7 +21,7 @@ def textSplit(textpdf):
       r'\n\n\n\n',
       r'\n\n\n',
   ]
-  result = textpdf 
+  result = textpdf
 
   for pattern in unnecessary_patterns:
     result = re.sub(pattern, '', result)
@@ -76,6 +76,6 @@ def textSplit(textpdf):
 
 def transform(filePath):
   textpdf = extract.extractPDF(filePath)
-  title, result = textSplit(textpdf)
-  return title, result
+  title, chunks = textSplit(textpdf)
+  return title, chunks
 
