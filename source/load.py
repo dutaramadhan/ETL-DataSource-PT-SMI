@@ -1,12 +1,16 @@
 import psycopg2
 from psycopg2 import sql
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 db_params = {
-    'host': 'your_host',
-    'database': 'your_database',
-    'user': 'your_user',
-    'password': 'your_password',
-    'port': 'your_port',
+    'host': os.getenv('DB_HOST'),
+    'database':  os.getenv('DB_DATABASE'),
+    'user':  os.getenv('DB_USER'),
+    'password':  os.getenv('DB_PASSWORD'),
+    'port':  os.getenv('DB_PORT'),
 }
 
 def insertSourceMetadata(source_uri, source_name, title):
@@ -30,7 +34,7 @@ def insertChunkData(source_id, chunk):
   cur = conn.cursor()
 
   col_name = "source_id, content"
-  table_name = "source_metadata"
+  table_name = "data"
 
   query = "INSERT INTO {} ({}) VALUES (%s, %s, %s) RETURNING id;"
   query = query.format(table_name, col_name)
