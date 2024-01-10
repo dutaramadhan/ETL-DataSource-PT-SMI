@@ -2,12 +2,12 @@ import PyPDF2
 import os
 
 def extractPDF(filepath):
-  pdfReader = PyPDF2.PdfReader(filepath)
+  pdf_reader = PyPDF2.PdfReader(filepath)
 
-  textPDF = ''
+  textpdf = ''
 
-  for i in range(len(pdfReader.pages)):
-    page = pdfReader.pages[i]
-    textPDF += page.extract_text()
+  for i in range(len(pdf_reader.pages)):
+    page = pdf_reader.pages[i]
+    textpdf += page.extract_text()
 
-  return textPDF
+  return textpdf
