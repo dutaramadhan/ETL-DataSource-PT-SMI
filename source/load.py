@@ -9,32 +9,34 @@ db_params = {
     'port': 'your_port',
 }
 
-def loadSourceMetadata(source_uri, source_name, title):
+def insertSourceMetadata(source_uri, source_name, title):
   conn = psycopg2.connect(**db_params)
   cur = conn.cursor()
 
   col_name = "source_uri source_name source_title"
   table_name = "source_metadata"
 
-  query = "INSERT INTO {} ({}) VALUES ({}) RETURNING id;"
-  query = query.format(table_name, col_name, ' '.join([source_uri, source_name, title]))
+  query = "INSERT INTO {} ({}) VALUES (%s, %s, %s) RETURNING id;"
+  query = query.format(table_name, col_name)
 
-  cur.execute(query)
+  cur.execute(query, (source_uri, source_name, title))
   source_id = cur.fetchone()[0]
   conn.commit()
 
   return source_id
 
-def loadChunkData(source_id, splitted_text):
+def insertChunkData(source_id, chunk):
   conn = psycopg2.connect(**db_params)
   cur = conn.cursor()
 
-  col_name = "source_id content"
-  table_name = "data"
+  col_name = "source_id, content"
+  table_name = "source_metadata"
 
-  query = "INSERT INTO {} ({}) VALUES ({}, %s)"
-  query = query.format(table_name, col_name, source_id)
+  query = "INSERT INTO {} ({}) VALUES (%s, %s, %s) RETURNING id;"
+  query = query.format(table_name, col_name)
 
-  for text in splitted_text:
-    cur.execute(query, text)
+  cur.execute(query, (source_id, chunk))
+  source_id = cur.fetchone()[0]
   conn.commit()
+
+  return source_id  
