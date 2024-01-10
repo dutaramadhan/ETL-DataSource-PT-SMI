@@ -43,8 +43,6 @@ def textSplit(textpdf):
 
       # store
       for k in range(len(pasal)):
-        print("pasal ->", pasal[k])
-        #print("\nPasal text ->", pasal_text[k])
         chunks.append(pasal[k] + '\n' + pasal_text[k])
 
   split_patterns = [
@@ -78,6 +76,6 @@ def textSplit(textpdf):
 
 def transform(filePath):
   textpdf = extract.extractPDF(filePath)
-  result = textSplit(textpdf)
-  return result
+  title, result = textSplit(textpdf)
+  return title, result
 

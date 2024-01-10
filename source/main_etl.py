@@ -1,7 +1,8 @@
 import transform
 import load
+import os
 
-title, result = transform.transform(r"D:\Kuliah\Kerja Praktik\Data Source\OneDrive_1_1-4-2024\UU_NO_31_1999.PDF")
-print(title)
-for index, res in enumerate(result):
-  print(res, "\n---\n")
+folderPath = r"D:\Kuliah\Kerja Praktik\Data Source\OneDrive_1_1-4-2024"
+for foldername, subfolders, files in os.walk(folderPath):
+    for file in files:
+        title, chunk = transform.transform(folderPath + '/' + file )
