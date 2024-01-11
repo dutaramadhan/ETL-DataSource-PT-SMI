@@ -92,5 +92,8 @@ def transform(filepath):
     r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
   ]
   title = findTitle(title_patterns, chunks[0])
+  if title == '':
+    title = re.split('/', filepath)[-1]
+    title = re.sub('.pdf|.PDF', '', title)
 
   return title, chunks
