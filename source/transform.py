@@ -2,7 +2,6 @@ import re
 import extract
 from langchain.text_splitter import NLTKTextSplitter
 import nltk
-nltk.download('punkt')
 
 def splitTextBy(pattern, text, context=""):
   result = re.split(pattern, text)
@@ -30,7 +29,7 @@ def textSplit(textpdf):
   chunks = []
 
   # Split Penjelasan
-  result, context = splitTextBy(r'\s*(PENJELASAN)\s*\n', result)
+  result, context = splitTextBy(r'\s*(PENJELASAN)\s*\n', textpdf)
 
   # Split Bab
   for i in range(len(result)):
@@ -94,3 +93,10 @@ def transform(filepath):
   title = findTitle(title_patterns, chunks[0])
 
   return title, chunks
+
+
+
+title, result = transform(r"D:\Kuliah\Kerja Praktik\Data Source\OneDrive_1_1-4-2024\UU_NO_28_1999.PDF")
+print(title)
+for index, res in enumerate(result):
+  print(res, "\n---\n")
