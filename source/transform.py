@@ -1,5 +1,8 @@
 import re
 import extract
+from langchain.text_splitter import NLTKTextSplitter
+import nltk
+nltk.download('punkt')
 
 def splitTextBy(pattern, text, context=""):
   result = re.split(pattern, text)
