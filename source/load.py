@@ -20,14 +20,21 @@ def insertSourceMetadata(source_uri, source_name, title):
   col_name = "source_uri, source_name, source_title"
   table_name = "source_metadata"
 
-  query = "INSERT INTO {} ({}) VALUES (%s, %s, %s) RETURNING id;"
-  query = query.format(table_name, col_name)
+  query = "INSERT INTO {} ({}) VALUES (%s, %s, %s) RETURNING id;".format(table_name, col_name)
 
-  cur.execute(query, (source_uri, source_name, title))
-  source_id = cur.fetchone()[0]
-  conn.commit()
+  try:
+    cur.execute(query, (source_uri, source_name, title))
+    source_id = cur.fetchone()[0]
+    conn.commit()
+    return source_id
+  except Exception as e:
+    print(f"Error inserting data: {e}")
+    conn.rollback()
+    return None
+  finally:
+    cur.close()
+    conn.close()
 
-  return source_id
 
 def insertChunkData(source_id, chunk):
   conn = psycopg2.connect(**db_params)
@@ -38,9 +45,15 @@ def insertChunkData(source_id, chunk):
 
   query = "INSERT INTO {} ({}) VALUES (%s, %s) RETURNING id;"
   query = query.format(table_name, col_name)
-
-  cur.execute(query, (source_id, chunk))
-  source_id = cur.fetchone()[0]
-  conn.commit()
-
-  return source_id  
+  try:
+    cur.execute(query, (source_id, chunk))
+    source_id = cur.fetchone()[0]
+    conn.commit()
+    return source_id 
+  except Exception as e:
+    print(f"Error inserting data: {e}")
+    conn.rollback()
+    return None
+  finally:
+    cur.close()
+    conn.close()
