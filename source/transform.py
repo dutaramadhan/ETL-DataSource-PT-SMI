@@ -98,7 +98,7 @@ def transform(filepath):
   return title, chunks
 
 def transformNonPasal(filepath):
-  textPage = extract.extractPDFPerPage(filepath)
+  chunks = extract.extractPDFPerPage(filepath)
 
   # Delete unnecessary pattern
   unnecessary_patterns = [
@@ -106,7 +106,8 @@ def transformNonPasal(filepath):
       r'\d+\n/\n\d+',
       r'\s*\n \n \n\s*',
   ]
-  chunks = cleanText(textPage)
+  for i in range(len(chunks)):
+    chunks[i] = cleanText(unnecessary_patterns, chunks[i])
 
   # Find Title
   title_patterns = [
@@ -117,4 +118,4 @@ def transformNonPasal(filepath):
     title = re.split('/', filepath)[-1]
     title = re.sub('.pdf|.PDF', '', title)
 
-  return title, chunks
+  return title, [item for item in chunks if item]
