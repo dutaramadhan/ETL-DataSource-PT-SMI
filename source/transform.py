@@ -97,3 +97,25 @@ def transform(filepath):
     title = re.sub('.pdf|.PDF', '', title)
 
   return title, chunks
+
+def transformNonPasal(filepath):
+  textPage = extract.extractPDFPerPage(filepath)
+
+  # Delete unnecessary pattern
+  unnecessary_patterns = [
+      r'\d+\s*/\s*\d+',
+      r'\d+\n/\n\d+',
+      r'\s*\n \n \n\s*',
+  ]
+  chunks = cleanText(textPage)
+
+  # Find Title
+  title_patterns = [
+    r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
+  ]
+  title = findTitle(title_patterns, chunks[0])
+  if title == '':
+    title = re.split('/', filepath)[-1]
+    title = re.sub('.pdf|.PDF', '', title)
+
+  return title, chunks

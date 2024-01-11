@@ -11,3 +11,10 @@ def extractPDF(filepath):
     textpdf += page.extract_text()
 
   return textpdf
+
+def extractPDFPerPage(filepath):
+  pdfReader = PyPDF2.PdfReader(filepath)
+
+  textPDF = [page.extract_text() for page in pdfReader.pages]
+
+  return textPDF
