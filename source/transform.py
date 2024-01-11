@@ -91,12 +91,30 @@ def transform(filepath):
     r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
   ]
   title = findTitle(title_patterns, chunks[0])
+  if title == '':
+    title = re.split('/', filepath)[-1]
+    title = re.sub('.pdf|.PDF', '', title)
 
   return title, chunks
 
+def transformNonPasal(filepath):
+  textPage = extract.extractPDFPerPage(filepath)
 
+  # Delete unnecessary pattern
+  unnecessary_patterns = [
+      r'\d+\s*/\s*\d+',
+      r'\d+\n/\n\d+',
+      r'\s*\n \n \n\s*',
+  ]
+  chunks = cleanText(textPage)
 
-title, result = transform(r"D:\Kuliah\Kerja Praktik\Data Source\OneDrive_1_1-4-2024\UU_NO_28_1999.PDF")
-print(title)
-for index, res in enumerate(result):
-  print(res, "\n---\n")
+  # Find Title
+  title_patterns = [
+    r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
+  ]
+  title = findTitle(title_patterns, chunks[0])
+  if title == '':
+    title = re.split('/', filepath)[-1]
+    title = re.sub('.pdf|.PDF', '', title)
+
+  return title, chunks
