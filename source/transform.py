@@ -74,8 +74,8 @@ def textSplit(textpdf):
 
   return title, [item for item in chunks if item]
 
-def transform(filePath):
-  textpdf = extract.extractPDF(filePath)
+def transform(filepath):
+  textpdf = extract.extractPDF(filepath)
   title, chunks = textSplit(textpdf)
   return title, chunks
 
