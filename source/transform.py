@@ -63,33 +63,16 @@ def textSplit(textpdf):
 
   return [item for item in chunks if item]
 
-def transform(filepath):
+def transform(filepath, unnecessary_patterns, title_patterns):
   textpdf = extract.extractPDF(filepath)
 
   # Delete unnecessary pattern
-  unnecessary_patterns = [
-      r'\d+\s*/\s*\d+',
-      r'www.hukumonline.com',
-      r'\d+\n/\n\d+',
-      r'/pusatdata',
-      r'www .huku monline.com',
-      r'Menemukan kesalahan ketik dalam dokumen[^\n]*',
-      r'Klik di sini[^\n]*',
-      r'untuk perbaikan.[^\n]*',
-      r'\n\n\n\n',
-      r'\n\n\n',
-  ]
   result = cleanText(unnecessary_patterns, textpdf)
 
   # Split Text
   chunks = textSplit(result)
 
   # Find Title
-  title_patterns = [
-    r'([\s\S]+?)DENGAN',
-    r'([\s\S]+?)PRESIDEN',
-    r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
-  ]
   title = findTitle(title_patterns, chunks[0])
   if title == '':
     title = re.split('/', filepath)[-1]
@@ -97,22 +80,15 @@ def transform(filepath):
 
   return title, chunks
 
-def transformNonPasal(filepath):
+def transformNonPasal(filepath, unnecessary_patterns, title_patterns):
+  # Extract 
   chunks = extract.extractPDFPerPage(filepath)
 
   # Delete unnecessary pattern
-  unnecessary_patterns = [
-      r'\d+\s*/\s*\d+',
-      r'\d+\n/\n\d+',
-      r'\s*\n \n \n\s*',
-  ]
   for i in range(len(chunks)):
     chunks[i] = cleanText(unnecessary_patterns, chunks[i])
 
   # Find Title
-  title_patterns = [
-    r'Perihal:\s*\n([\s\S]+)\s*\n\s*Tanggal :'
-  ]
   title = findTitle(title_patterns, chunks[0])
   if title == '':
     title = re.split('/', filepath)[-1]

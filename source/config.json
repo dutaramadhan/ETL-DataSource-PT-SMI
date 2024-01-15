@@ -1,0 +1,35 @@
+[
+    {
+        "folder_path": "D:/Kuliah/Kerja Paktik/Data Source/Pasal",
+        "split_mode": "pasal",
+        "unnecessary_patterns" : [
+            "\\d+\\s*/\\s*\\d+",
+            "www.hukumonline.com",
+            "\\d+\\n/\\n\\d+",
+            "/pusatdata",
+            "www .huku monline.com",
+            "Menemukan kesalahan ketik dalam dokumen[^\\n]*",
+            "Klik di sini[^\\n]*",
+            "untuk perbaikan.[^\\n]*",
+            "\\n\\n\\n\\n",
+            "\\n\\n\\n"
+        ],
+        "title_patterns": [
+            "([\\s\\S]+?)DENGAN",
+            "([\\s\\S]+?)PRESIDEN",
+            "Perihal:\\s*\\n([\\s\\S]+)\\s*\\n\\s*Tanggal :"
+          ]
+    },
+    {
+        "folde_path": "D:/Kuliah/Keja Paktik/Data Source/Internal",
+        "split_mode": "page",
+        "unnecessary_patterns": [
+            "\\d+\\s*/\\s*\\d+",
+            "\\d+\\n/\\n\\d+",
+            "\\s*\\n \\n \\n\\s*"
+        ],
+        "title_patterns": [
+            "Perihal:\\s*\\n([\\s\\S]+)\\s*\\n\\s*Tanggal :"
+          ]
+    }
+]
